@@ -1,0 +1,6 @@
+tags
+.vscode/
+__pycache__/
+activate.bat
+deactivate.bat
+venv/
