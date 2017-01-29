@@ -67,7 +67,7 @@ def fetch_entries_by_list(listname,data):
         except Exception:
             pass
 
-        entry_domain,entry_name = card.name.split(':') if card.name.split(':')[0] in constants.project_domains.keys() else [None,card.name]
+        entry_domain,entry_name = list( map( lambda x: x.strip(),card.name.split(':') ) ) if card.name.split(':')[0].strip() in constants.project_domains.keys() else [None,card.name]
         
         if( entry_labels != None and len( entry_labels ) > 0 ):
             
@@ -90,7 +90,7 @@ def fetch_entries_by_list(listname,data):
             #tasks will have prefix TASK
             entry_domain = 'BLOG'
 
-        entry = { "name":str(entry_name),"category":str(entry_category),"client":str(entry_client),"domain":str(entry_domain),"closed":str(card.closed),"duedate":str(card.due),"status":listname}
+        entry = { "name":str(entry_name),"url":str(card.short_url),"category":str(entry_category),"client":str(entry_client),"domain":str(entry_domain),"closed":str(card.closed),"duedate":str(card.due),"status":listname}
         all_entries.append(entry)
     
     return all_entries
