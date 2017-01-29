@@ -49,12 +49,15 @@ def fetch_entries_by_list(listname,data):
         except Exception:
             pass
 
-        entry_domain,entry_name = card.name.split(':') if card.name.split(':')[0] in constants.project_categories.keys() else [None,card.name]
+        entry_domain,entry_name = card.name.split(':') if card.name.split(':')[0] in constants.project_domains.keys() else [None,card.name]
         
         if( entry_labels != None and len( entry_labels ) > 0 ):
             entry_client = entry_labels[1].name if ( len( entry_labels ) == 2 and entry_labels[1].name in constants.client_labels ) else entry_labels[0].name if entry_labels[0].name in constants.client_labels else ''
             entry_category = entry_labels[1].name if ( len( entry_labels ) == 2 and entry_labels[1].name in constants.category_labels ) else entry_labels[0].name if entry_labels[0].name in constants.category_labels else ''
-        
+
+        if(entry_domain == None and (entry_client == 'JDA Assigned')):
+            entry_domain = 'STR'
+
         entry = { "name":str(entry_name),"category":str(entry_category),"client":str(entry_client),"domain":str(entry_domain),"closed":str(card.closed),"duedate":str(card.due),"status":listname}
         all_entries.append(entry)
     
@@ -127,6 +130,8 @@ def get_pipeline_data():
     bucket_task_queue = fetch_entries_by_list(listname='Bucket',data=board_data)
     in_progress_task_queue = fetch_entries_by_list(listname='In Progress',data=board_data)
     completed_tasks_queue = fetch_completed_tasks(data=board_data)
+
+    infinite_task_queue.reverse()
 
     return {
         "infinite_task_queue":infinite_task_queue,

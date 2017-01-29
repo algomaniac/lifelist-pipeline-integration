@@ -1,4 +1,4 @@
-project_categories = {
+project_domains = {
     'SCRIPTS':'Scripting Projects',
     'CI':'Continous Integration',
     'TTD':'Testing & Debugging',
@@ -9,8 +9,13 @@ project_categories = {
     '2LS':'Tooling Projects',
     'OSS':'Open Source Projects',
     'DOC':'Documentation',
-    'LEARN':'Learning'
+    'LEARN':'Learning',
+    'BLOG':'Blog Posts',
+    'STR':'Assigned Stories'
 }
+
+#reverse project domains map
+#reverse_project_domain_map = {v: k for k, v in project_domains.items()}
 
 category_labels = ['Learning','Projects','Blogpost','Tasks','Documentation']
 
