@@ -11,7 +11,8 @@ project_domains = {
     'DOC':'Documentation',
     'LEARN':'Learning',
     'BLOG':'Blog Posts',
-    'STR':'Assigned Stories'
+    'STR':'Assigned Stories',
+    'TASK' : 'Tasks'
 }
 
 #reverse project domains map

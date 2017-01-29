@@ -1,8 +1,7 @@
 import sys
 import os
-import datetime
 
-from dateutils import increment_month,month_year_tostring
+from dateutils import current_month_year,increment_month,month_year_tostring,cmp_month_year
 
 from trello import TrelloClient, Board, List, Card
 from trello.exceptions import *
@@ -13,6 +12,25 @@ import constants
 #Global Variables
 trello_client = None
 
+
+def fetch_completed_tasks(data):
+
+    #Start from the earliest month
+    curr_month_year = constants.start_month_year
+
+    end_month_year = current_month_year()
+
+    completed_entries = {}
+
+    while(cmp_month_year(curr_month_year,end_month_year) == 1):
+        entries = fetch_entries_by_list( 'Done - ' + month_year_tostring(*curr_month_year) , data )
+
+        if(len(entries) > 0):
+            completed_entries[month_year_tostring(*curr_month_year)] = entries
+
+        curr_month_year = increment_month(*curr_month_year)
+
+    return completed_entries
 
 
 def fetch_entries_by_list(listname,data):
@@ -52,37 +70,30 @@ def fetch_entries_by_list(listname,data):
         entry_domain,entry_name = card.name.split(':') if card.name.split(':')[0] in constants.project_domains.keys() else [None,card.name]
         
         if( entry_labels != None and len( entry_labels ) > 0 ):
+            
             entry_client = entry_labels[1].name if ( len( entry_labels ) == 2 and entry_labels[1].name in constants.client_labels ) else entry_labels[0].name if entry_labels[0].name in constants.client_labels else ''
             entry_category = entry_labels[1].name if ( len( entry_labels ) == 2 and entry_labels[1].name in constants.category_labels ) else entry_labels[0].name if entry_labels[0].name in constants.category_labels else ''
 
+            if(entry_client == 'Personal' and entry_category == 'Tasks'):
+                #Personal Tasks will be ignored
+                continue
+
         if(entry_domain == None and (entry_client == 'JDA Assigned')):
+            #JDA Assigned stories will have prefix JDA
             entry_domain = 'STR'
+
+        if(entry_category == 'Tasks'):
+            #tasks will have prefix TASK
+            entry_domain = 'TASK'
+
+        if(entry_category == 'Blogpost'):
+            #tasks will have prefix TASK
+            entry_domain = 'BLOG'
 
         entry = { "name":str(entry_name),"category":str(entry_category),"client":str(entry_client),"domain":str(entry_domain),"closed":str(card.closed),"duedate":str(card.due),"status":listname}
         all_entries.append(entry)
     
     return all_entries
-
-def fetch_completed_tasks(data):
-
-    #Start from the earliest month
-    curr_month_year = constants.start_month_year
-
-    now = datetime.datetime.now()
-    end_month_year = (now.month,now.year)
-
-    completed_entries = {}
-
-    while(curr_month_year[1] < end_month_year[1] or curr_month_year[0] < end_month_year[0]):
-        entries = fetch_entries_by_list( 'Done - ' + month_year_tostring(*curr_month_year) , data )
-
-        if(len(entries) > 0):
-            completed_entries[month_year_tostring(*curr_month_year)] = entries
-
-        curr_month_year = increment_month(*curr_month_year)
-
-    return completed_entries
-
 
 def get_pipeline_data():
 
