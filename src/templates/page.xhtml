@@ -70,96 +70,40 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>Categories</th>
-                        <th colspan="1">Prefix</th>
-                        <th colspan="1">Backlog</th>
-                        <th colspan="1">In Progress</th>
+                        <th colspan="1">Domain</th>
+                        <th colspan="1">Queue</th>
+                        <th colspan="1">Bucket</th>
+                        <th colspan="1">Stopped</th>
+                        <th colspan="1">InProgress</th>
                         <th colspan="1">Done</th>
+                        <th colspan="1">Total</th>
                     </tr>
-                    <tr>
-                        <td>Continuous Integration</td>
-                        <td colspan="1">CI</td>
-                        <td colspan="1" style="text-align: center;">3</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">2</td>
-                    </tr>
-                    <tr>
-                        <td>Stories</td>
-                        <td colspan="1">STR</td>
-                        <td colspan="1" style="text-align: center;">2</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">8</td>
-                    </tr>
-                    <tr>
-                        <td>Testing &amp; Debugging</td>
-                        <td colspan="1">TTD</td>
-                        <td colspan="1" style="text-align: center;">5</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">1</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Miscellaneous Projects</td>
-                        <td colspan="1">MISC</td>
-                        <td colspan="1" style="text-align: center;">1</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Code Quality</td>
-                        <td colspan="1">CQ</td>
-                        <td colspan="1" style="text-align: center;">5</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Functional</td>
-                        <td colspan="1">FUNC</td>
-                        <td colspan="1" style="text-align: center;">1</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Fun</td>
-                        <td colspan="1">FUN</td>
-                        <td colspan="1" style="text-align: center;">4</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Tooling</td>
-                        <td colspan="1">2LS</td>
-                        <td colspan="1" style="text-align: center;">9</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">1</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Open Source</td>
-                        <td colspan="1">OSS</td>
-                        <td colspan="1" style="text-align: center;">1</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Documentation</td>
-                        <td colspan="1">DOC</td>
-                        <td colspan="1" style="text-align: center;">9</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">1</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Learning</td>
-                        <td colspan="1">LEARN</td>
-                        <td colspan="1" style="text-align: center;">11</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">4</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">1</td>
-                    </tr>
-                    <tr>
-                        <td colspan="1">Infrastructure</td>
-                        <td colspan="1">INFRA</td>
-                        <td colspan="1" style="text-align: center;">2</td>
-                        <td class="highlight-blue" colspan="1" data-highlight-colour="blue" style="text-align: center;">&nbsp;</td>
-                        <td class="highlight-green" colspan="1" data-highlight-colour="green" style="text-align: center;">&nbsp;</td>
-                    </tr>
+
+                    {% for domain in data["domains"] %}
+                        <tr>
+                            <td colspan="1">
+                                {{data["task_count_by_domain"][domain]["domain_text"]}}(<strong>{{domain}}</strong>)
+                            </td>
+                            <td colspan="1" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["backlog"]}}
+                            </td>
+                            <td colspan="1" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["bucket"]}}
+                            </td>
+                            <td colspan="1" class="highlight-grey" data-highlight-colour="grey" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["suspended"]}}
+                            </td>
+                            <td colspan="1" class="highlight-blue" data-highlight-colour="blue" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["inprogress"]}}
+                            </td>
+                            <td colspan="1" class="highlight-green" data-highlight-colour="green" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["completed"]}}
+                            </td>
+                            <td colspan="1" class="highlight-yellow" data-highlight-colour="yellow" style="text-align: center;">
+                                {{data["task_count_by_domain"][domain]["total"]}}
+                            </td>
+                        </tr>
+                    {% endfor %}                    
                 </tbody>
             </table>
             <p>&nbsp;</p>
